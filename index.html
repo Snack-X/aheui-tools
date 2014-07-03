@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<title>aheui-tools</title>
+</head>
+<body>
+	<h1>number2aheui</h1>
+	Enter a number : <input type="number" id="n2a-num"> <button id="n2a-btn" type="button">Convert</button>
+	<br><br>
+	Generated output : <span id="n2a-out"></span>
+	<br>
+	Generated aheui output : <span id="n2a-aout"></span>
+
+	<hr>
+
+	<script src="number2aheui.js"></script>
+
+	<script>
+		var $ = document.getElementById.bind(document);
+
+		var n2a = new number2aheui();
+
+		$("n2a-btn").onclick = function() {
+			var number = parseInt($("n2a-num").value, 10);
+			var expr = n2a.get(number);
+			var expr_aheui = n2a.getAheui(number);
+
+			$("n2a-out").innerHTML = expr.join(" ");
+			$("n2a-aout").innerHTML = expr_aheui;
+		};
+	</script>
+</body>
+</html>
