@@ -9,13 +9,13 @@ var number2aheui = function() {
 	function try_dis(num) {
 		var shortest = [];
 
-		for(var i=2 ; i<=9 ; i++) {
+		for(var i=9 ; i>=2 ; i++) {
 			var nr = Math.floor(num / i);
 			var diff = nr * i - num;
 			var t;
 
-			if(diff === 0) t = get_expr(nr).concat([i, "*"]);
-			else t = get_expr(nr).concat([i, "*"], get_expr(-diff), ["+"]);
+			if(diff === 0) t = get_expr(nr).concat(i, "*");
+			else t = get_expr(nr).concat(i, "*", get_expr(-diff), "+");
 
 			if(t.length < shortest.length || shortest.length === 0) shortest = t.slice(0);
 		}
@@ -55,7 +55,7 @@ var number2aheui = function() {
 	function get_expr(num) {
 		if(num <= 18) return get_basic(num);
 
-		for(var i=2 ; i<=9 ; i++) {
+		for(var i=9 ; i>=2 ; i++) {
 			var nr = Math.floor(num / i);
 
 			if(nr >= 2 && nr <= 9 && nr * i === num)
@@ -64,7 +64,7 @@ var number2aheui = function() {
 
 		var rt = Math.sqrt(num);
 		if(Math.floor(rt) === rt)
-			return get_expr(rt).concat([">", "*"]);
+			return get_expr(rt).concat(">", "*");
 
 		var arr_dis = try_dis(num);
 		var arr_sqrt = try_sqrt(num);
