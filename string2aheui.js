@@ -26,21 +26,6 @@ var string2aheui = function() {
 		return expcache[num];
 	}
 
-	function convert_lowercase(str) {
-		var code = get_exp(97);
-		var charcode = to_charcode(str);
-
-		for(var i in charcode) {
-			var cc = charcode[i] - 97;
-
-			if(i < charcode.length - 1) code += "빠";
-			if(cc > 0) code += get_exp(cc) + "다";
-			code += "맣";
-		}
-
-		return code;
-	}
-
 	function convert_onecase(str, base) {
 		var code = get_exp(base);
 		var charcode = to_charcode(str);
