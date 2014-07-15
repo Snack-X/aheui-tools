@@ -7,16 +7,20 @@ var number2aheui = function() {
 	}
 
 	function try_dis(num) {
+		var shortest = [];
+
 		for(var i=2 ; i<=9 ; i++) {
 			var nr = Math.floor(num / i);
 			var diff = nr * i - num;
+			var t;
 
-			if(Math.abs(diff) >= 2 && Math.abs(diff) <= 9)
-				return get_expr(nr).concat([i, "*", Math.abs(diff), diff > 0 ? "-" : "+"]);
+			if(diff === 0) t = get_expr(nr).concat([i, "*"]);
+			else t = get_expr(nr).concat([i, "*"], get_expr(-diff), ["+"]);
 
-			else if(i * nr === num)
-				return get_expr(nr).concat([i, "*"]);
+			if(t.length < shortest.length || shortest.length === 0) shortest = t.slice(0);
 		}
+
+		return shortest;
 	}
 
 	function try_sqrt(num) {
@@ -69,22 +73,7 @@ var number2aheui = function() {
 	}
 
 	function get_expression(num) {
-		if(num < 0) {
-			return [];
-		}
-
-		if(num <= 18) return get_basic(num);
-
-		var exp = get_expr(num);
-		for(var i=2 ; i<=9 ; i++) {
-			var temp = get_expr(num - i).concat([i, "+"]);
-			if(temp.length < exp.length) exp = temp.slice(0);
-
-			temp = get_expr(num + i).concat([i, "-"]);
-			if(temp.length < exp.length) exp = temp.slice(0);
-		}
-
-		return exp;
+		return get_expr(num);
 	}
 
 	function get_aheui_expression(num) {
