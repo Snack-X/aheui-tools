@@ -9,7 +9,7 @@ var number2aheui = function() {
 	function try_dis(num) {
 		var shortest = [];
 
-		for(var i=9 ; i>=2 ; i++) {
+		for(var i=9 ; i>=2 ; i--) {
 			var nr = Math.floor(num / i);
 			var diff = nr * i - num;
 			var t;
@@ -55,7 +55,7 @@ var number2aheui = function() {
 	function get_expr(num) {
 		if(num <= 18) return get_basic(num);
 
-		for(var i=9 ; i>=2 ; i++) {
+		for(var i=9 ; i>=2 ; i--) {
 			var nr = Math.floor(num / i);
 
 			if(nr >= 2 && nr <= 9 && nr * i === num)
