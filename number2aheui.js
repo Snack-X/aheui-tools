@@ -2,6 +2,8 @@ var number2aheui = function() {
 	var cho = {"+": 3, "*": 4, "-": 16, "/": 2, ">": 8};
 	var jong = [0, 0, 1, 7, 16, 8, 18, 9, 15, 10];
 
+	var expcache = {};
+
 	function han_assemble(cho, jung, jong) {
 		return String.fromCharCode(0xac00 + (((cho * 21) + jung) * 28) + jong);
 	}
@@ -52,7 +54,7 @@ var number2aheui = function() {
 		}
 	}
 
-	function get_expr(num) {
+	function _get_expr(num) {
 		if(num <= 18) return get_basic(num);
 
 		for(var i=9 ; i>=2 ; i--) {
@@ -72,12 +74,15 @@ var number2aheui = function() {
 		return arr_dis.length < arr_sqrt.length ? arr_dis : arr_sqrt;
 	}
 
-	function get_expression(num) {
-		return get_expr(num);
+	function get_expr(num) {
+		if(typeof expcache[num] === "undefined")
+			expcache[num] = _get_expr(num);
+
+		return expcache[num];
 	}
 
 	function get_aheui_expression(num) {
-		var expr = get_expression(num);
+		var expr = get_expr(num);
 
 		var aheui = "";
 
@@ -91,7 +96,7 @@ var number2aheui = function() {
 	}
 
 	return {
-		get: get_expression,
+		get: get_expr,
 		getAheui: get_aheui_expression
 	};
 };
