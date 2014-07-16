@@ -1,6 +1,5 @@
-var string2aheui = function() {
-	var n2a = new number2aheui();
-	var expcache = {};
+var string2aheui = function(_n2a) {
+	var n2a = typeof _n2a === "undefined" ? new number2aheui() : _n2a;
 
 	function to_charcode(str) {
 		var a = [];
@@ -13,28 +12,19 @@ var string2aheui = function() {
 		if(str.match(/^[A-Z]+$/)) return "uppercase";
 		if(str.match(/^[a-zA-Z]+$/)) return "mixedcase";
 		if(str.match(/^[가-힣]+$/)) return "korean";
+		if(str.match(/^[0-9]+$/)) return "number";
 		return "mixed";
 	}
 
-	function get_exp(num) {
-		if(num === 0)
-			expcache[0] = "";
-
-		if(typeof expcache[num] === "undefined")
-			expcache[num] = n2a.getAheui(num);
-
-		return expcache[num];
-	}
-
 	function convert_onecase(str, base) {
-		var code = get_exp(base);
+		var code = n2a.getAheui(base);
 		var charcode = to_charcode(str);
 
 		for(var i in charcode) {
 			var cc = charcode[i] - base;
 
 			if(i < charcode.length - 1) code += "빠";
-			if(cc > 0) code += get_exp(cc) + "다";
+			if(cc > 0) code += n2a.getAheui(cc) + "다";
 			code += "맣";
 		}
 
@@ -57,7 +47,7 @@ var string2aheui = function() {
 		var charcode = to_charcode(str);
 		var current = 1;
 
-		var code = get_exp(range2[0]) + get_exp(range1[0]);
+		var code = n2a.getAheui(range2[0]) + n2a.getAheui(range1[0]);
 
 		for(var i in charcode) {
 			var cc = charcode[i];
@@ -65,11 +55,11 @@ var string2aheui = function() {
 
 			if(cc >= range1[0] && cc <= range1[1]) {
 				range = 1;
-				tempcode = get_exp(cc - range1[0]);
+				tempcode = n2a.getAheui(cc - range1[0]);
 			}
 			else {
 				range = 2;
-				tempcode = get_exp(cc - range2[0]);
+				tempcode = n2a.getAheui(cc - range2[0]);
 			}
 
 			if(current != range) {
@@ -97,10 +87,15 @@ var string2aheui = function() {
 		for(var i in charcode) {
 			var cc = charcode[i];
 
-			code += get_exp(cc) + "맣";
+			code += n2a.getAheui(cc) + "맣";
 		}
 
 		return code;
+	}
+
+	function convert_number(str) {
+		var num = parseInt(str, 10);
+		return n2a.getAheui(num) + "망";
 	}
 
 	function convert(str) {
@@ -112,6 +107,7 @@ var string2aheui = function() {
 			case "korean": return convert_korean(str);
 			case "mixedcase": return convert_mixedcase(str);
 			case "mixed": return convert_mixed(str);
+			case "number": return convert_number(str);
 		}
 	}
 
