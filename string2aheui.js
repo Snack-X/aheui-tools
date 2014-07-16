@@ -31,18 +31,6 @@ var string2aheui = function(_n2a) {
 		return code;
 	}
 
-	function convert_lowercase(str) {
-		return convert_onecase(str, 97);
-	}
-
-	function convert_uppercase(str) {
-		return convert_onecase(str, 65);
-	}
-
-	function convert_korean(str) {
-		return convert_onecase(str, 44032);
-	}
-
 	function convert_twocase(str, range1, range2) {
 		var charcode = to_charcode(str);
 		var current = 1;
@@ -76,10 +64,6 @@ var string2aheui = function(_n2a) {
 		return code;
 	}
 
-	function convert_mixedcase(str) {
-		return convert_twocase(str, [65, 90], [97, 122]);
-	}
-
 	function convert_mixed(str) {
 		var charcode = to_charcode(str);
 		var code = "";
@@ -102,10 +86,10 @@ var string2aheui = function(_n2a) {
 		var type = detect_type(str);
 
 		switch(type) {
-			case "lowercase": return convert_lowercase(str);
-			case "uppercase": return convert_uppercase(str);
-			case "korean": return convert_korean(str);
-			case "mixedcase": return convert_mixedcase(str);
+			case "lowercase": return convert_onecase(str, 97);
+			case "uppercase": return convert_onecase(str, 65);
+			case "korean": return convert_onecase(str, 0xac00);
+			case "mixedcase": return convert_twocase(str, [65, 90], [97, 122]);
 			case "mixed": return convert_mixed(str);
 			case "number": return convert_number(str);
 		}
