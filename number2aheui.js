@@ -81,8 +81,22 @@ var number2aheui = function() {
 		return expcache[num];
 	}
 
+	function get_expression(num) {
+		var shortest = get_expr(num);
+
+		for(var i = 1 ; i <= 9 ; i++) {
+			var temp = get_expr(num + i).concat(get_expr(i), "-");
+			if(shortest.length > temp.length) shortest = temp;
+
+			temp = get_expr(num - i).concat(get_expr(i), "+");
+			if(shortest.length > temp.length) shortest = temp;
+		}
+
+		return shortest;
+	}
+
 	function get_aheui_expression(num) {
-		var expr = get_expr(num);
+		var expr = get_expression(num);
 
 		var aheui = "";
 
@@ -96,7 +110,7 @@ var number2aheui = function() {
 	}
 
 	return {
-		get: get_expr,
+		get: get_expression,
 		getAheui: get_aheui_expression
 	};
 };
