@@ -26,15 +26,19 @@ var number2aheui = function() {
 	}
 
 	function try_sqrt(num) {
+		var shortest = [];
+
 		var rt = Math.floor(Math.sqrt(num));
 		var remainder = num - rt * rt;
-		var exp_plus = get_expr(rt).concat(">", "*", get_expr(remainder), "+");
+		var t = get_expr(rt).concat(">", "*", get_expr(remainder), "+");
+		if(t.length < shortest.length || shortest.length === 0) shortest = t.slice(0);
 
 		rt = Math.ceil(Math.sqrt(num));
 		remainder = rt * rt - num;
-		var exp_minus = get_expr(rt).concat(">", "*", get_expr(remainder), "-");
+		t = get_expr(rt).concat(">", "*", get_expr(remainder), "-");
+		if(t.length < shortest.length || shortest.length === 0) shortest = t.slice(0);
 
-		return exp_plus.length < exp_minus.length ? exp_plus : exp_minus;
+		return shortest;
 	}
 
 	function get_basic(num) {
@@ -83,6 +87,8 @@ var number2aheui = function() {
 
 	function get_expression(num) {
 		var shortest = get_expr(num);
+
+		if(num <= 18) return shortest;
 
 		for(var i = 1 ; i <= 9 ; i++) {
 			var temp = get_expr(num + i).concat(get_expr(i), "-");
